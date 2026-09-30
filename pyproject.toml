@@ -1,0 +1,58 @@
+[project]
+name = "strategy-store"
+version = "0.1.0"
+description = "The strategic layer as data: positions, evidence, forcing gates, and the Direction block for session start (sea-mii7)"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.0",
+    "httpx>=0.27.0",
+    "jinja2>=3.0",
+    "pyyaml>=6.0",
+    # <2.1: SQLAlchemy 2.1 makes psycopg (3) the default postgresql:// driver, and
+    # the driver declared here is psycopg2. An unlocked `uv tool install` picked up
+    # 2.1.1 on 2026-09-26 and the installed CLI could not open the store (st-knn).
+    "sqlalchemy>=2.0,<2.1",
+    "openpyxl>=3.1",
+    "psycopg2-binary>=2.9",
+    # Reads ~/.env the way a shell that sourced it would — including the
+    # ${SHARED_PG_...} references the town-wide credentials file composes its
+    # URLs from — without executing the file (hq-f8za).
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+# The admin surface (`strategy web`). An extra, not a dependency: the CLI is the
+# tool, and installing it should not pull a web server.
+# python-multipart is what parses the triage forms; FastAPI raises at request
+# time without it, so it belongs with the surface, not as a dev-only extra.
+web = ["fastapi>=0.110", "uvicorn>=0.29", "python-multipart>=0.0.9"]
+dev = ["pytest>=8.0", "ruff>=0.1.0", "httpx>=0.27.0", "fastapi>=0.110",
+       "uvicorn>=0.29", "python-multipart>=0.0.9"]
+
+[project.scripts]
+strategy = "strategy_store.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/strategy_store"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]
+
+[tool.ruff.lint.per-file-ignores]
+# report.py is a Markdown/Jinja template in a string; forcing_seed.py is
+# hand-collected prose rows with their citations.
+"src/strategy_store/report.py" = ["E501"]
+"src/strategy_store/forcing_seed.py" = ["E501"]

@@ -1,0 +1,31 @@
+# Shape of $STRATEGY_PROFILE_RULES (default ~/.strategy/profile-rules.yaml).
+# Synthetic rows — the real file names real segments and real phrases, and lives
+# outside this repository for the same reason the positions do.
+#
+# `strategy profile check` needs this file for two of its checks. Without it
+# they report "could not run" rather than passing, because a check that cannot
+# see its rules has not cleared anything.
+
+# Words that appear in public copy → the position that decided not to play there.
+# The link is a term list because a decision names a segment in prose: nothing
+# connects "AI Productivity" on a skills list to "corporate AI-enablement
+# training — explicitly declined" except a human saying so once.
+not_playing:
+  "widget consulting": "vikunja:#0000"
+  "widget training": "vikunja:#0000"
+  "sprocket coaching": "position:1"
+
+# Internal shorthand that means something else to a reader who lacks the memo.
+# The value is the reason, printed with the finding.
+shorthand:
+  "leave the widgets behind": "memo shorthand; in public it reads as abandoning customers"
+  "the compile step": "unexplained term of art"
+
+cadence:
+  # How far back to count drops when a cadence word appears in the copy.
+  window_days: 30
+
+# Printed as a caveat on the registry check while $GT_ROOT/apps.json is known
+# not to list everything that ships. Leave it unset when the registry is
+# complete — a standing caveat is how a check earns being ignored.
+# registry_incomplete: "widget-thing ships but has no apps.json entry yet"

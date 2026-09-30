@@ -1,0 +1,17 @@
+# Example seed mappings. Copy to ~/.strategy/seed-map.yaml, or point
+# STRATEGY_SEED_MAP at your own file.
+#
+# These are kept OUT of the repo because they name real decisions in real
+# systems. Anything not listed here gets a NULL framework slot on purpose —
+# an orphan position is a finding the report is meant to surface, not a bug.
+
+# "system:ref" -> framework slot. Slots are yours to name; the shipped report
+# understands the Playing-to-Win cascade as ptw.box1 .. ptw.box5.
+element_heuristic:
+  "vikunja:#1234": ptw.box1      # aspiration — what winning means
+  "vikunja:#1235": ptw.box2      # where to play
+  "beads:abc-123.4": ptw.box3    # how to win
+
+# Supersession stated in the source text itself: [newer, older].
+supersedes:
+  - ["vikunja:#1235", "vikunja:#1234"]

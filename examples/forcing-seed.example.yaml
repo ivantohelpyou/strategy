@@ -1,0 +1,29 @@
+# Example forcing-gate seed rows.
+#
+# Copy to ~/.strategy/forcing-seed.yaml (or point STRATEGY_FORCING_SEED at it)
+# and replace with your own. These rows are deliberately kept OUT of the repo:
+# a forcing gate names a real commitment and a real date.
+#
+# A gate is a dated condition that forces a decision. `gates:` names what the
+# decision unblocks — that is the field that makes a list of dates into a
+# dependency graph. `due_on: null` is legal and meaningful: a gate with no date
+# is the "deferral without a trigger" failure the report exists to surface.
+
+forcing:
+  - source_system: vikunja          # where the gate is visible today
+    source_ref: "#1234"             # its id in that system
+    title: Ship the v2 migration
+    condition: Cut over production to the new schema.
+    due_on: 2026-11-30
+    gates: Everything downstream of the schema — the API rewrite cannot start first.
+    venture: null                   # optional: which venture this belongs to
+    position_ref: null              # optional: "system:ref" of a related position
+
+  - source_system: manual
+    source_ref: hiring-2026
+    title: Decide whether to hire a second engineer
+    condition: Commit to a hire, or record that staying solo is the decision.
+    due_on: null                    # deliberate: no trigger yet, and that is the finding
+    gates: The 2027 roadmap; anything that assumes two pairs of hands.
+    venture: null
+    position_ref: null
